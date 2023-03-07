@@ -5,7 +5,7 @@ import { FormGroup } from '../../assets/css/form/styles.js';
 import { Input } from './Input';
 import { Label } from './Label';
 
-export const Group = ({
+export const FormField = ({
   inputPlaceholder,
   labelText,
   htmlFor,
@@ -34,7 +34,7 @@ export const Group = ({
   );
 };
 
-Group.propTypes = {
+FormField.propTypes = {
   inputPlaceholder: P.string.isRequired,
   labelText: P.string.isRequired,
   htmlFor: P.string.isRequired,

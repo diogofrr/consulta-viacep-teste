@@ -1,12 +1,17 @@
+import '../../assets/css/global-styles.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { FormForm } from '../../assets/css/form/styles';
 import { H1, Section } from '../../assets/css/ui/styles';
-import '../../assets/css/global-styles.css';
 
-import { Group } from '../../components/form/Group';
+import { FormField } from '../../components/form/FormField';
 import { Button } from '../../components/form/Button';
 
 import { cepApi } from '../../api/cepApi';
-import { useState, useRef, useEffect } from 'react';
+
+import { toast, ToastContainer } from 'react-toastify';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import throttle from 'lodash.throttle';
 
 const Form = () => {
   const cepRef = useRef(null);
@@ -16,22 +21,22 @@ const Form = () => {
   const cidadeRef = useRef(null);
   const estadoRef = useRef(null);
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [inputDisable, setInputDisable] = useState(true);
   const [result, setResult] = useState({});
 
   useEffect(() => {
-    if (Object.keys(result).length != 0) {
-      console.log(result);
-      setIsDisabled(() => false);
-      ruaRef.current.value = result.logradouro;
-      compRef.current.value = result.complemento != '' ? result.complemento : '-';
-      bairroRef.current.value = result.bairro;
-      cidadeRef.current.value = result.localidade;
-      estadoRef.current.value = result.uf;
+    if (Object.keys(result).length) {
+      const { logradouro, complemento, bairro, localidade, uf } = result;
+      setInputDisable(() => false);
+      ruaRef.current.value = logradouro;
+      compRef.current.value = complemento || '-';
+      bairroRef.current.value = bairro;
+      cidadeRef.current.value = localidade;
+      estadoRef.current.value = uf;
     }
   }, [result]);
 
-  const handleSaveCep = async (val) => {
+  const handleSaveCep = useCallback(async (val) => {
     const fmtVal = val.replace(/[-_]/g, '');
     const valLength = fmtVal.length;
 
@@ -39,15 +44,18 @@ const Form = () => {
       const results = await cepApi(fmtVal);
       if (results.erro) {
         cepRef.current.value = '';
-        window.alert('Valor inválido');
+        toast.error('CEP inexistente ou valor inválido.');
       } else {
         setResult(results);
+        toast.success('CEP localizado com sucesso!');
       }
     }
-  };
+  }, []);
+
+  const handleSaveCepThrottled = throttle(handleSaveCep, 1000);
 
   const handleResetForm = () => {
-    setIsDisabled(() => true);
+    setInputDisable(() => true);
     setResult(() => '');
     cepRef.current.value = '';
     ruaRef.current.value = '';
@@ -59,63 +67,77 @@ const Form = () => {
 
   return (
     <Section>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+        theme="light"
+      />
       <FormForm>
         <H1>Insira seu CEP</H1>
-        <Group
+        <FormField
           name="cep"
           htmlFor="cep"
           labelText="CEP"
           inputPlaceholder={'Digite seu CEP aqui'}
           mask={'99999-999'}
           inputRef={cepRef}
-          onChange={() => handleSaveCep(cepRef.current.value)}
+          onChange={() => handleSaveCepThrottled(cepRef.current.value)}
           autoFocus={false}
           hasMask={true}
-          disabled={!isDisabled}
+          disabled={!inputDisable}
         />
-        <Group
+        <FormField
           name="rua"
           htmlFor="rua"
           labelText="Rua"
           inputPlaceholder={'Digite o nome da sua rua aqui'}
-          disabled={isDisabled}
+          disabled={inputDisable}
           inputRef={ruaRef}
+          hasMask={true}
+          charMask={'9999999'}
         />
-        <Group
+        <FormField
           name="complemento"
           htmlFor="complemento"
           labelText="Complemento"
           inputPlaceholder={'Digite o complemento aqui'}
-          disabled={isDisabled}
+          disabled={inputDisable}
           inputRef={compRef}
         />
-        <Group
+        <FormField
           name="bairro"
           htmlFor="bairro"
           labelText="Bairro"
           inputPlaceholder={'Digite seu bairro aqui'}
-          disabled={isDisabled}
+          disabled={inputDisable}
           inputRef={bairroRef}
         />
-        <Group
+        <FormField
           name="cidade"
           htmlFor="cidade"
           labelText="Cidade"
           inputPlaceholder={'Digite sua cidade aqui'}
-          disabled={isDisabled}
+          disabled={inputDisable}
           inputRef={cidadeRef}
         />
-        <Group
+        <FormField
           name="estado"
           htmlFor="estado"
           labelText="Estado"
           inputPlaceholder={'Digite o estado aqui'}
           mask={'aa'}
-          disabled={isDisabled}
+          disabled={inputDisable}
           inputRef={estadoRef}
           hasMask={true}
         />
-        <Button text={'Limpar'} type={'button'} onClick={handleResetForm} setDisabled={false} disabled={isDisabled} />
+        <Button text={'Enviar'} type={'button'} onClick={handleResetForm} setDisabled={inputDisable} />
       </FormForm>
     </Section>
   );

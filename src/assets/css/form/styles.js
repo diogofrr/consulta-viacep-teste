@@ -40,7 +40,7 @@ export const StyledInputMask = styled(InputMask)`
 
   &[disabled] {
     background-color: lightgray;
-    cursor: not-allowed;
+    cursor: auto;
   }
 `;
 
@@ -63,7 +63,7 @@ export const NormalInput = styled.input`
 
   &[disabled] {
     background-color: lightgray;
-    cursor: not-allowed;
+    cursor: auto;
   }
 `;
 
@@ -73,15 +73,22 @@ export const FormButton = styled.button`
   font-size: 1.6rem;
   font-weight: 600;
   font-family: 'Montserrat', sans-serif;
-  border: solid 0.3rem red;
+  border: solid 0.3rem blue;
   border-radius: 7px;
-  background-color: red;
+  background-color: blue;
   color: white;
   transition: 0.3s;
 
   &:hover {
     background-color: white;
-    color: red;
+    color: blue;
     cursor: pointer;
+  }
+
+  &[disabled] {
+    background-color: lightgray;
+    border-color: gray;
+    cursor: auto;
+    color: gray;
   }
 `;
