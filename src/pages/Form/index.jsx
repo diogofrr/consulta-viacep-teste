@@ -100,7 +100,6 @@ const Form = () => {
           inputPlaceholder={'Digite o nome da sua rua aqui'}
           disabled={inputDisable}
           inputRef={ruaRef}
-          hasMask={true}
           charMask={'9999999'}
         />
         <FormField
