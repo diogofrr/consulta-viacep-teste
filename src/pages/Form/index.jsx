@@ -52,7 +52,7 @@ const Form = () => {
     }
   }, []);
 
-  const handleSaveCepThrottled = throttle(handleSaveCep, 1000);
+  const handleSaveCepThrottled = throttle(handleSaveCep, 800);
 
   const handleResetForm = () => {
     setInputDisable(() => true);
@@ -100,8 +100,6 @@ const Form = () => {
           inputPlaceholder={'Digite o nome da sua rua aqui'}
           disabled={inputDisable}
           inputRef={ruaRef}
-          hasMask={true}
-          charMask={'9999999'}
         />
         <FormField
           name="complemento"
@@ -137,7 +135,7 @@ const Form = () => {
           inputRef={estadoRef}
           hasMask={true}
         />
-        <Button text={'Enviar'} type={'button'} onClick={handleResetForm} setDisabled={inputDisable} />
+        <Button text={'Limpar'} type={'button'} onClick={handleResetForm} setDisabled={inputDisable} />
       </FormForm>
     </Section>
   );

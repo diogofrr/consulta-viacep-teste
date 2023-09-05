@@ -1,12 +1,18 @@
 import styled from 'styled-components';
 import InputMask from 'react-input-mask';
+import { device } from '../device';
 
 export const FormForm = styled.form`
   width: 65rem;
   height auto;
   background-color: white;
   box-shadow: -9px 9px 20px 0px rgb(0 0 0 / 30%);
-  padding 3rem
+  padding 3rem;
+
+  @media ${device.laptop} {
+    width: 100vw;
+    min-height: 100vh;
+  }
 `;
 
 export const FormGroup = styled.div`
