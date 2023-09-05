@@ -135,7 +135,7 @@ const Form = () => {
           inputRef={estadoRef}
           hasMask={true}
         />
-        <Button text={'Enviar'} type={'button'} onClick={handleResetForm} setDisabled={inputDisable} />
+        <Button text={'Limpar'} type={'button'} onClick={handleResetForm} setDisabled={inputDisable} />
       </FormForm>
     </Section>
   );
