@@ -2,16 +2,14 @@
 
 import { useState } from "react";
 
-interface Props {
+interface InputProps {
   className: string
+  disabled: boolean
+  mask: (value: string) => any
 }
 
-export default function Input({ className }: Props) {
+const Input: React.FC<InputProps> = ({ className, disabled, mask }: InputProps) => {
   const [value, setValue] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const handleStartLoading = () => setLoading(true);
-  const handleStopLoading = () => setLoading(false);
 
   return (
     <div className="flex flex-col w-full relative">
@@ -23,18 +21,10 @@ export default function Input({ className }: Props) {
       </label>
       <input
         onChange={(e) => {
-          if (e.target.value.length < 9) {
-            const updatedValue = e.target.value.replace(/(\D)/, "")
-            setValue(updatedValue)
-
-            // if (updatedValue.length === 8) {
-            //   const maskValue = updatedValue.replace(/^(\d{5})(\d{3})+?$/, "$1-$2");
-            //   setValue(maskValue)
-            // } else {
-            //   setValue(updatedValue)
-            // }
-          }
+          const maskValue = mask(e.currentTarget.value)
+          setValue(maskValue)
         }}
+        disabled={disabled}
         value={value}
         autoFocus
         type="text"
@@ -45,3 +35,5 @@ export default function Input({ className }: Props) {
     </div>
   );
 }
+
+export default Input;
