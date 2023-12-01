@@ -4,4 +4,6 @@ const actions = {
   RESET_STATUS: "RESET_STATUS",
 };
 
+export type ACTIONSTYPE = "START_LOADING" | "STOP_LOADING" | "RESET_STATUS"
+
 export default actions;

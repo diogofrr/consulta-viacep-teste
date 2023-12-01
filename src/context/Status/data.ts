@@ -1,7 +1,8 @@
-import { STATUS } from "@/hooks/useStatus";
+import { STATUS, StatusEnum } from "@/hooks/useStatus";
 
 const initialState = {
-  status: "idle" as STATUS,
+  status: StatusEnum.Idle as STATUS,
+  msg: ""
 };
 
 export default initialState;

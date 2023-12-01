@@ -2,8 +2,7 @@
 
 import { useReducer, ReactNode } from "react";
 import initialState from "./data";
-import reducer from "./reducer";
-import { STATUS } from "@/hooks/useStatus";
+import reducer, { StopLoadingPayload } from "./reducer";
 import { StatusContext, StatusContextType } from "./StatusContext";
 
 interface StatusContextProps {
@@ -19,18 +18,17 @@ const StatusProvider = ({ children }: StatusContextProps) => {
   //   console.log("--------------------------------------");
   // }, [state]);
   
-  const startLoading = () => {
-    dispatch({ type: "START_LOADING" });
+  const startLoading = (payload: string) => {
+    dispatch({ type: "START_LOADING", payload });
   };
   
-  const stopLoading = (payload: STATUS) => {
+  const stopLoading = (payload: StopLoadingPayload) => {
     dispatch({ type: "STOP_LOADING", payload });
   };
   
   const resetStatus = () => {
     dispatch({
-      type: "RESET_STATUS",
-      payload: "idle",
+      type: "RESET_STATUS"
     });
   };
   

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { StatusContext } from '@/context/Status/StatusContext';
+import { useContext } from 'react';
 
 export type STATUS = 'loading' | 'error' | 'success' | 'idle'
 
@@ -10,34 +11,37 @@ export enum StatusEnum {
 }
 
 const useStatus = () => {
-  const [status, setStatus] = useState<STATUS>('idle');
-  const [error, setError] = useState<string | null>(null);
+  const context = useContext(StatusContext)
+  if (!context) throw new Error("Context not loaded.")
 
-  const setLoading = () => {
-    setStatus('loading');
-    setError(null);
+  const { startLoading, resetStatus, state, stopLoading } = context
+
+  const setLoading = (msg: string) => {
+    startLoading(msg ?? "")
   };
 
-  const setErrorStatus = (errorMessage: string) => {
-    setStatus('error');
-    setError(errorMessage);
+  const setError = (errorMessage: string) => {
+    stopLoading({
+      status: StatusEnum.Error,
+      msg: errorMessage
+    })
   };
 
-  const setSuccess = () => {
-    setStatus('success');
-    setError(null);
+  const setSuccess = (successMessage: string) => {
+    stopLoading({
+      status: StatusEnum.Success,
+      msg: successMessage
+    })
   };
 
   const setIdle = () => {
-    setStatus('idle');
-    setError(null);
+    resetStatus()
   };
 
   return {
-    status,
-    error,
+    status: state,
     setLoading,
-    setErrorStatus,
+    setError,
     setSuccess,
     setIdle,
   };

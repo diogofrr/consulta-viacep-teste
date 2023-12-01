@@ -30,7 +30,7 @@ const Input: React.FC<InputProps> = ({ className, disabled, mask }: InputProps) 
         type="text"
         id="cep"
         name="cep"
-        className={`w-full p-2 rounded-lg border-2 border-solid border-gray-500 outline-none focus:border-blue-600 ${className}`}
+        className={`w-full p-2 rounded-lg border-2 border-solid border-gray-500 outline-none focus:border-blue-600 ${className} ${disabled ? "bg-gray-100" : "bg-transparent"}`}
       />
     </div>
   );

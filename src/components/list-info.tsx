@@ -4,10 +4,10 @@ interface ListInfoProps {
 
 export default function ListInfo({ data }: ListInfoProps) {
   return (
-    <ul>
+    <ul className="w-full">
       {Object.keys(data).map((key) => (
         <li key={`list-item-${key}`}>
-          <span>{key}: </span>
+          <span className="font-semibold">{key}: </span>
           {data[key]}
         </li>
       ))}

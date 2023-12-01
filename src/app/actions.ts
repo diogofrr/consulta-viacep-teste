@@ -1,6 +1,6 @@
 'use server'
 
-import { CepInfo, CepResult } from "@/types/cep"
+import { CepResult } from "@/types/cep"
 
 export async function searchCEP(previousState: CepResult | null, formData: FormData) {
   try {
@@ -9,17 +9,19 @@ export async function searchCEP(previousState: CepResult | null, formData: FormD
     if (!cep) throw new Error()
 
     const updatedCep = cep.toString().replace(/(\D)/, "")
+    console.log(updatedCep)
 
     const result = await fetch(`https://viacep.com.br/ws/${updatedCep}/json/`, {
-      cache: 'default'
+      cache: 'no-cache'
     })
     const parsedResult = await result.json()
-
+    
     if (parsedResult?.erro) throw new Error()
-
+    console.log(parsedResult)
+    
     return {
       error: false,
-      msg: 'O CEP foi localizado com sucesso!',
+      msg: "O CEP foi localizado com sucesso!",
       result: parsedResult
     }
   } catch (e: any) {

@@ -2,12 +2,12 @@
 
 import { createContext } from "react";
 import initialState from "./data";
-import { STATUS } from "@/hooks/useStatus";
+import { StopLoadingPayload } from "./reducer";
 
 export interface StatusContextType {
   state: typeof initialState;
-  startLoading: () => void;
-  stopLoading: (payload: STATUS) => void;
+  startLoading: (payload: string) => void;
+  stopLoading: (payload: StopLoadingPayload) => void;
   resetStatus: () => void;
 }
 
